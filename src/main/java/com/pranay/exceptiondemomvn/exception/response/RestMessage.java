@@ -4,11 +4,11 @@ import java.util.List;
 
 public class RestMessage {
 	private String message;
-	private List<String> messages;
+	private List<String> details;
 
-	public RestMessage(String message, List<String> messages) {
+	public RestMessage(String message, List<String> details) {
 		this.message = message;
-		this.messages = messages;
+		this.details = details;
 	}
 
 	public String getMessage() {
@@ -16,6 +16,6 @@ public class RestMessage {
 	}
 
 	public List<String> getMessages() {
-		return messages;
+		return details;
 	}
 }

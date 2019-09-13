@@ -29,8 +29,10 @@ public class CarServiceImpl implements CarService {
 
 	@Override
 	public Car save(Car car) {
-		Owner owner = ownerService.save(car.getOwner());
-		car.setOwner(owner);
+		if (car.getOwner() != null) {
+			Owner owner = ownerService.save(car.getOwner());
+			car.setOwner(owner);
+		}
 		return carRepository.save(car);
 	}
 

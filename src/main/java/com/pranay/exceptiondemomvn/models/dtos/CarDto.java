@@ -39,7 +39,7 @@ public class CarDto implements DtoTransformer<Car> {
 		Car car = new Car();
 		car.setId(this.getId());
 		car.setLicenseNo(this.getLicenseNo());
-		car.setOwner(this.getOwnerDto().convertToEntity());
+		if (this.getOwnerDto() != null) car.setOwner(this.getOwnerDto().convertToEntity());
 		return car;
 	}
 }
