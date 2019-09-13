@@ -1,9 +1,12 @@
-package com.pranay.exceptiondemomvn.dtos;
+package com.pranay.exceptiondemomvn.models.dtos;
 
 import com.pranay.exceptiondemomvn.models.Car;
 
+import javax.validation.constraints.NotEmpty;
+
 public class CarDto implements DtoTransformer<Car> {
 	private Long id;
+	@NotEmpty(message = "Car.licenseNo must not be null")
 	private String licenseNo;
 	private OwnerDto ownerDto;
 

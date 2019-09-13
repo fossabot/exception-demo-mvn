@@ -1,5 +1,7 @@
 package com.pranay.exceptiondemomvn.services.impl;
 
+import com.pranay.exceptiondemomvn.exception.core.EntityNotFoundException;
+import com.pranay.exceptiondemomvn.exception.core.IllegalEntityAccessException;
 import com.pranay.exceptiondemomvn.models.Car;
 import com.pranay.exceptiondemomvn.models.Owner;
 import com.pranay.exceptiondemomvn.repositories.CarRepository;
@@ -35,7 +37,7 @@ public class CarServiceImpl implements CarService {
 	@Override
 	public Car findById(Long carId) {
 		Optional<Car> car = carRepository.findById(carId);
-		return car.orElse(null);    // TODO: throw exception
+		return car.orElseThrow(() -> new EntityNotFoundException(new Object[] {Car.class.toString(), carId}));
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class CarServiceImpl implements CarService {
 		Car car = findById(newCar.getId());
 		car.setLicenseNo(newCar.getLicenseNo());
 		if (!car.getOwner().getId().equals(newCar.getOwner().getId())) {
-			return null;    // TODO: think what exception to throw owner does not belong to car
+			throw new IllegalEntityAccessException(new Object[] {newCar.getOwner().getId(), Owner.class.toString(), car.getId(), Car.class.toString()});
 		}
 		car.setOwner(ownerService.update(newCar.getOwner()));
 		return carRepository.save(car);

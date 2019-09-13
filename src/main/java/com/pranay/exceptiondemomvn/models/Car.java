@@ -1,6 +1,6 @@
 package com.pranay.exceptiondemomvn.models;
 
-import com.pranay.exceptiondemomvn.dtos.CarDto;
+import com.pranay.exceptiondemomvn.models.dtos.CarDto;
 
 import javax.persistence.*;
 

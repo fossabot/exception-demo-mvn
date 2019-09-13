@@ -1,4 +1,4 @@
-package com.pranay.exceptiondemomvn.dtos;
+package com.pranay.exceptiondemomvn.models.dtos;
 
 import com.pranay.exceptiondemomvn.models.Owner;
 

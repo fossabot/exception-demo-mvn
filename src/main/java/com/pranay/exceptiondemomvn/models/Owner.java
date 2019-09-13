@@ -1,6 +1,6 @@
 package com.pranay.exceptiondemomvn.models;
 
-import com.pranay.exceptiondemomvn.dtos.OwnerDto;
+import com.pranay.exceptiondemomvn.models.dtos.OwnerDto;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

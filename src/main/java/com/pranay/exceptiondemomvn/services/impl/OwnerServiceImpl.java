@@ -1,5 +1,6 @@
 package com.pranay.exceptiondemomvn.services.impl;
 
+import com.pranay.exceptiondemomvn.exception.core.EntityNotFoundException;
 import com.pranay.exceptiondemomvn.models.Owner;
 import com.pranay.exceptiondemomvn.repositories.OwnerRepository;
 import com.pranay.exceptiondemomvn.services.OwnerService;
@@ -22,7 +23,7 @@ public class OwnerServiceImpl implements OwnerService {
 	@Override
 	public Owner findById(Long ownerId) {
 		Optional<Owner> owner = ownerRepository.findById(ownerId);
-		return owner.orElse(null);  //TODO: Throw exception
+		return owner.orElseThrow(() -> new EntityNotFoundException(new Object[] {Owner.class.toString(), ownerId}));
 	}
 
 	@Override
