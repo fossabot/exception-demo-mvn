@@ -53,6 +53,7 @@ public class CarServiceImpl implements CarService {
 		}
 		Car car = findByCarIdAndOwnerId(carId, ownerId);
 		car.setLicenseNo(newCar.getLicenseNo());
+		car.setVersion(newCar.getVersion());
 		return carRepository.save(car);
 	}
 }

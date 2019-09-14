@@ -9,6 +9,7 @@ public class OwnerDto implements DtoTransformer<Owner> {
 	private Long id;
 	private String name;
 	private Set<CarDto> cars;
+	private Long version;
 
 	public Long getId() {
 		return id;
@@ -34,11 +35,20 @@ public class OwnerDto implements DtoTransformer<Owner> {
 		this.cars = cars;
 	}
 
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 	@Override
 	public Owner convertToEntity() {
 		Owner owner = new Owner();
 		owner.setId(this.getId());
 		owner.setName(this.getName());
+		if (this.getVersion() != null) owner.setVersion(this.getVersion());
 		if (this.getCars() != null) owner.setCars(this.getCars().stream().map(CarDto::convertToEntity).collect(Collectors.toSet()));
 		return owner;
 	}

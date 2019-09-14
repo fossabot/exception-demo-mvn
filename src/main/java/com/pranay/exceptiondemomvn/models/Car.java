@@ -3,7 +3,6 @@ package com.pranay.exceptiondemomvn.models;
 import com.pranay.exceptiondemomvn.models.dtos.CarDto;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class Car extends BaseEntity implements EntityTransformer<CarDto> {

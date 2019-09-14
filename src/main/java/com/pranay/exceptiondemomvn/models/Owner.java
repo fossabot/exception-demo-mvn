@@ -1,6 +1,7 @@
 package com.pranay.exceptiondemomvn.models;
 
 import com.pranay.exceptiondemomvn.models.dtos.OwnerDto;
+import org.hibernate.annotations.OptimisticLock;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,7 +14,11 @@ public class Owner extends BaseEntity implements EntityTransformer<OwnerDto> {
 	private Long id;
 	private String name;
 
+	@Version
+	private Long version;
+
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	@OptimisticLock(excluded = true)
 	private Set<Car> cars;
 
 	public Long getId() {
@@ -40,11 +45,20 @@ public class Owner extends BaseEntity implements EntityTransformer<OwnerDto> {
 		this.cars = cars;
 	}
 
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 	@Override
 	public OwnerDto convertToDto() {
 		OwnerDto ownerDto = new OwnerDto();
 		ownerDto.setId(this.getId());
 		ownerDto.setName(this.getName());
+		ownerDto.setVersion(this.getVersion());
 		if (this.getCars() != null) ownerDto.setCars(this.getCars().stream().map(Car::convertToDto).collect(Collectors.toSet()));
 		return ownerDto;
 	}
