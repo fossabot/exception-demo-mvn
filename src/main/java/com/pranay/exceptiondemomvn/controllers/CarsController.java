@@ -19,33 +19,30 @@ public class CarsController {
 	@Autowired
 	private CarService carService;
 
-	@GetMapping(value = "/cars")
-	public List<CarDto> getAllCars() {
-		return carService.getAllCars().stream()
+	@GetMapping(value = "/owner/{ownerId}/cars")
+	public List<CarDto> getAllCars(@PathVariable("ownerId") Long ownerId) {
+		return carService.getAllCarsByOwnerId(ownerId).stream()
 				.map(Car::convertToDto)
 				.collect(Collectors.toList());
 	}
 
-	@GetMapping(value = "/car/{id}", produces = "application/vnd.demo.api.v1+json")
-	public ResponseEntity<CarDto> findById(@PathVariable("id") Long id) {
-		return ResponseEntity.ok(carService.findById(id).convertToDto());
+	@GetMapping(value = "/owner/{ownerId}/car/{carId}", produces = "application/vnd.demo.api.v1+json")
+	public ResponseEntity<CarDto> findById(@PathVariable("ownerId") Long ownerId, @PathVariable("carId") Long carId) {
+		return ResponseEntity.ok(carService.findByCarIdAndOwnerId(carId, ownerId).convertToDto());
 	}
 
-	@GetMapping(value = "/car/{id}", produces = "application/vnd.demo.api.v2+json")
-	public ResponseEntity<String> findByIdv2(@PathVariable("id") Long id) {
-		return ResponseEntity.ok("this is v2");
-	}
-
-	@PostMapping(value = "/car")
-	public ResponseEntity<CarDto> save(@RequestBody CarDto carDto) throws URISyntaxException {
-		Car car = carService.save(carDto.convertToEntity());
+	@PostMapping(value = "/owner/{ownerId}/car", produces = "application/vnd.demo.api.v1+json")
+	public ResponseEntity<CarDto> save(@PathVariable("ownerId") Long ownerId, @RequestBody CarDto carDto) throws URISyntaxException {
+		Car car = carService.save(ownerId, carDto.convertToEntity());
 		return ResponseEntity
-				.created(new URI("/v1/car/" + car.getId().toString()))
+				.created(new URI("/car/" + car.getId().toString()))
 				.body(car.convertToDto());
 	}
 
-	@PutMapping(value = "/car")
-	public ResponseEntity<CarDto> update(@Valid @RequestBody CarDto carDto) {
-		return ResponseEntity.ok(carService.update(carDto.convertToEntity()).convertToDto());
+	@PutMapping(value = "/owner/{ownerId}/car/{carId}", produces = "application/vnd.demo.api.v1+json")
+	@PatchMapping(value = "/owner/{ownerId}/car/{carId}", produces = "application/vnd.demo.api.v1+json")
+	public ResponseEntity<CarDto> update(@PathVariable("ownerId") Long ownerId, @PathVariable("carId") Long carId, @Valid @RequestBody CarDto carDto) {
+		Car car = carService.update(carId, ownerId, carDto.convertToEntity());
+		return ResponseEntity.ok(car.convertToDto());
 	}
 }

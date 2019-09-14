@@ -3,11 +3,11 @@ package com.pranay.exceptiondemomvn.services;
 import com.pranay.exceptiondemomvn.models.Car;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CarService {
-	List<Car> getAllCars();
-	Car save(Car car);
+	List<Car> getAllCarsByOwnerId(Long ownerId);
+	Car save(Long ownerId, Car car);
 	Car findById(Long carId);
-	Car update(Car newCar);
+	Car findByCarIdAndOwnerId(Long carId, Long ownerId);
+	Car update(Long carId, Long ownerId ,Car newCar);
 }

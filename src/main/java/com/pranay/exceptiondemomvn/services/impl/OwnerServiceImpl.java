@@ -1,6 +1,7 @@
 package com.pranay.exceptiondemomvn.services.impl;
 
 import com.pranay.exceptiondemomvn.exception.core.EntityNotFoundException;
+import com.pranay.exceptiondemomvn.exception.core.IllegalEntityAccessException;
 import com.pranay.exceptiondemomvn.models.Owner;
 import com.pranay.exceptiondemomvn.repositories.OwnerRepository;
 import com.pranay.exceptiondemomvn.services.OwnerService;
@@ -27,8 +28,11 @@ public class OwnerServiceImpl implements OwnerService {
 	}
 
 	@Override
-	public Owner update(Owner newOwner) {
-		Owner owner = findById(newOwner.getId());
+	public Owner update(Long ownerId, Owner newOwner) {
+		if (!ownerId.equals(newOwner.getId())) {
+			throw new IllegalEntityAccessException(new Object[] {ownerId, "Request.PathVariable", newOwner.getId(), "Request.Body"});
+		}
+		Owner owner = findById(ownerId);
 		owner.setName(newOwner.getName());
 		return ownerRepository.save(owner);
 	}

@@ -23,16 +23,14 @@ public class CarServiceImpl implements CarService {
 	private OwnerService ownerService;
 
 	@Override
-	public List<Car> getAllCars() {
-		return carRepository.findAll();
+	public List<Car> getAllCarsByOwnerId(Long ownerId) {
+		return carRepository.findByOwnerId(ownerId);
 	}
 
 	@Override
-	public Car save(Car car) {
-		if (car.getOwner() != null) {
-			Owner owner = ownerService.save(car.getOwner());
-			car.setOwner(owner);
-		}
+	public Car save(Long ownerId, Car car) {
+		Owner owner = ownerService.findById(ownerId);
+		car.setOwner(owner);
 		return carRepository.save(car);
 	}
 
@@ -43,13 +41,18 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
-	public Car update(Car newCar) {
-		Car car = findById(newCar.getId());
-		car.setLicenseNo(newCar.getLicenseNo());
-		if (!car.getOwner().getId().equals(newCar.getOwner().getId())) {
-			throw new IllegalEntityAccessException(new Object[] {newCar.getOwner().getId(), Owner.class.toString(), car.getId(), Car.class.toString()});
+	public Car findByCarIdAndOwnerId(Long carId, Long ownerId) {
+		Optional<Car> car = carRepository.findByIdAndOwnerId(carId, ownerId);
+		return car.orElseThrow(() -> new EntityNotFoundException(new Object[] {Car.class.toString(), carId}));
+	}
+
+	@Override
+	public Car update(Long carId, Long ownerId, Car newCar) {
+		if (!carId.equals(newCar.getId())) {
+			throw new IllegalEntityAccessException(new Object[] {carId, "Request.PathVariable", newCar.getId(), "Request.Body"});
 		}
-		car.setOwner(ownerService.update(newCar.getOwner()));
+		Car car = findByCarIdAndOwnerId(carId, ownerId);
+		car.setLicenseNo(newCar.getLicenseNo());
 		return carRepository.save(car);
 	}
 }

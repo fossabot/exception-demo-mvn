@@ -5,5 +5,5 @@ import com.pranay.exceptiondemomvn.models.Owner;
 public interface OwnerService {
 	Owner save(Owner owner);
 	Owner findById(Long ownerId);
-	Owner update(Owner newOwner);
+	Owner update(Long ownerId, Owner newOwner);
 }

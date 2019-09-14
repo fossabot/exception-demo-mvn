@@ -1,14 +1,36 @@
 package com.pranay.exceptiondemomvn.controllers;
 
+import com.pranay.exceptiondemomvn.models.Owner;
+import com.pranay.exceptiondemomvn.models.dtos.OwnerDto;
 import com.pranay.exceptiondemomvn.services.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RestController
 public class OwnerController {
 	@Autowired
 	private OwnerService ownerService;
 
-	@GetMapping("/owner/{id}", )
+	@GetMapping(value = "/owner/{ownerId}", produces = "application/vnd.demo.api.v1+json")
+	public ResponseEntity<OwnerDto> findById(@PathVariable("ownerId") Long ownerId) {
+		return ResponseEntity.ok(ownerService.findById(ownerId).convertToDto());
+	}
+
+	@PostMapping(value = "/owner", produces = "application/vnd.demo.api.v1+json")
+	public ResponseEntity<OwnerDto> save(@RequestBody OwnerDto ownerDto) throws URISyntaxException {
+		Owner owner = ownerService.save(ownerDto.convertToEntity());
+		return ResponseEntity
+				.created(new URI("/owner/" + owner.getId().toString()))
+				.body(owner.convertToDto());
+	}
+
+	@PutMapping(value = "/owner/{ownerId}", produces = "application/vnd.demo.api.v1+json")
+	@PatchMapping(value = "/owner/{ownerId}", produces = "application/vnd.demo.api.v1+json")
+	public ResponseEntity<OwnerDto> update(@PathVariable("ownerId") Long ownerId, @RequestBody OwnerDto ownerDto) {
+		return ResponseEntity.ok(ownerService.update(ownerId, ownerDto.convertToEntity()).convertToDto());
+	}
 }

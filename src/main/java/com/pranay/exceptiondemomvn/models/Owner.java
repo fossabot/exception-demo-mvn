@@ -2,10 +2,9 @@ package com.pranay.exceptiondemomvn.models;
 
 import com.pranay.exceptiondemomvn.models.dtos.OwnerDto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Owner extends BaseEntity implements EntityTransformer<OwnerDto> {
@@ -13,6 +12,9 @@ public class Owner extends BaseEntity implements EntityTransformer<OwnerDto> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	private Set<Car> cars;
 
 	public Long getId() {
 		return id;
@@ -30,11 +32,20 @@ public class Owner extends BaseEntity implements EntityTransformer<OwnerDto> {
 		this.name = name;
 	}
 
+	public Set<Car> getCars() {
+		return cars;
+	}
+
+	public void setCars(Set<Car> cars) {
+		this.cars = cars;
+	}
+
 	@Override
 	public OwnerDto convertToDto() {
 		OwnerDto ownerDto = new OwnerDto();
 		ownerDto.setId(this.getId());
 		ownerDto.setName(this.getName());
+		if (this.getCars() != null) ownerDto.setCars(this.getCars().stream().map(Car::convertToDto).collect(Collectors.toSet()));
 		return ownerDto;
 	}
 }

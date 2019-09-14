@@ -3,6 +3,7 @@ package com.pranay.exceptiondemomvn.models;
 import com.pranay.exceptiondemomvn.models.dtos.CarDto;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Car extends BaseEntity implements EntityTransformer<CarDto> {
@@ -34,10 +35,6 @@ public class Car extends BaseEntity implements EntityTransformer<CarDto> {
 		this.licenseNo = licenseNo;
 	}
 
-	public Owner getOwner() {
-		return owner;
-	}
-
 	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
@@ -56,7 +53,6 @@ public class Car extends BaseEntity implements EntityTransformer<CarDto> {
 		carDto.setId(this.getId());
 		carDto.setLicenseNo(this.getLicenseNo());
 		carDto.setVersion(this.getVersion());
-		if (this.getOwner() != null) carDto.setOwnerDto(this.getOwner().convertToDto());
 		return carDto;
 	}
 }
