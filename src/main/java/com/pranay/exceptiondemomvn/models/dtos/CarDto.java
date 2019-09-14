@@ -9,6 +9,7 @@ public class CarDto implements DtoTransformer<Car> {
 	@NotEmpty(message = "Car.licenseNo must not be null")
 	private String licenseNo;
 	private OwnerDto ownerDto;
+	private Integer Version;
 
 	public Long getId() {
 		return id;
@@ -34,11 +35,20 @@ public class CarDto implements DtoTransformer<Car> {
 		this.ownerDto = ownerDto;
 	}
 
+	public Integer getVersion() {
+		return Version;
+	}
+
+	public void setVersion(Integer version) {
+		Version = version;
+	}
+
 	@Override
 	public Car convertToEntity() {
 		Car car = new Car();
 		car.setId(this.getId());
 		car.setLicenseNo(this.getLicenseNo());
+		car.setVersion(this.getVersion());
 		if (this.getOwnerDto() != null) car.setOwner(this.getOwnerDto().convertToEntity());
 		return car;
 	}

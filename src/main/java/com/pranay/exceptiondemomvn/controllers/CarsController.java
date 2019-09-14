@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("v1")
 public class CarsController {
 
 	@Autowired
@@ -27,9 +26,14 @@ public class CarsController {
 				.collect(Collectors.toList());
 	}
 
-	@GetMapping(value = "/car/{id}")
+	@GetMapping(value = "/car/{id}", produces = "application/vnd.demo.api.v1+json")
 	public ResponseEntity<CarDto> findById(@PathVariable("id") Long id) {
 		return ResponseEntity.ok(carService.findById(id).convertToDto());
+	}
+
+	@GetMapping(value = "/car/{id}", produces = "application/vnd.demo.api.v2+json")
+	public ResponseEntity<String> findByIdv2(@PathVariable("id") Long id) {
+		return ResponseEntity.ok("this is v2");
 	}
 
 	@PostMapping(value = "/car")

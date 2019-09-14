@@ -11,6 +11,9 @@ public class Car extends BaseEntity implements EntityTransformer<CarDto> {
 	private Long id;
 	private String licenseNo;
 
+	@Version
+	private Integer version;
+
 	@JoinColumn( name = "owner_id" )
 	@ManyToOne
 	private Owner owner;
@@ -39,11 +42,20 @@ public class Car extends BaseEntity implements EntityTransformer<CarDto> {
 		this.owner = owner;
 	}
 
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
 	@Override
 	public CarDto convertToDto() {
 		CarDto carDto = new CarDto();
 		carDto.setId(this.getId());
 		carDto.setLicenseNo(this.getLicenseNo());
+		carDto.setVersion(this.getVersion());
 		if (this.getOwner() != null) carDto.setOwnerDto(this.getOwner().convertToDto());
 		return carDto;
 	}
