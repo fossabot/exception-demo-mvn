@@ -8,6 +8,7 @@ import com.pranay.exceptiondemomvn.services.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,6 +16,11 @@ public class OwnerServiceImpl implements OwnerService {
 
 	@Autowired
 	OwnerRepository ownerRepository;
+
+	@Override
+	public List<Owner> findAll() {
+		return ownerRepository.findAll();
+	}
 
 	@Override
 	public Owner save(Owner owner) {

@@ -3,6 +3,7 @@ package com.pranay.exceptiondemomvn.models;
 import com.pranay.exceptiondemomvn.models.dtos.CarDto;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Car extends BaseEntity implements EntityTransformer<CarDto> {
@@ -15,7 +16,7 @@ public class Car extends BaseEntity implements EntityTransformer<CarDto> {
 	private Integer version;
 
 	@JoinColumn( name = "owner_id" )
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private Owner owner;
 
 	public Long getId() {
@@ -44,6 +45,20 @@ public class Car extends BaseEntity implements EntityTransformer<CarDto> {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Car)) return false;
+		Car car = (Car) o;
+		return getId().equals(car.getId()) &&
+				getLicenseNo().equals(car.getLicenseNo());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), getLicenseNo());
 	}
 
 	@Override

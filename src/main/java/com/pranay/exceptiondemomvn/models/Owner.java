@@ -1,6 +1,7 @@
 package com.pranay.exceptiondemomvn.models;
 
 import com.pranay.exceptiondemomvn.models.dtos.OwnerDto;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OptimisticLock;
 
 import javax.persistence.*;
@@ -17,7 +18,8 @@ public class Owner extends BaseEntity implements EntityTransformer<OwnerDto> {
 	@Version
 	private Long version;
 
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+	@BatchSize(size = 5)
 	@OptimisticLock(excluded = true)
 	private Set<Car> cars;
 

@@ -9,11 +9,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class OwnerController {
 	@Autowired
 	private OwnerService ownerService;
+
+	@GetMapping(value = "/owners", produces = "application/vnd.demo.api.v1+json")
+	public ResponseEntity<List<OwnerDto>> findAll() {
+		return ResponseEntity.ok(ownerService.findAll().stream().map(Owner::convertToDto).collect(Collectors.toList()));
+	}
 
 	@GetMapping(value = "/owner/{ownerId}", produces = "application/vnd.demo.api.v1+json")
 	public ResponseEntity<OwnerDto> findById(@PathVariable("ownerId") Long ownerId) {
